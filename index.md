@@ -1,37 +1,71 @@
-## Welcome to GitHub Pages
+# Setup Github SSH for windows 11
 
-You can use the [editor on GitHub](https://github.com/aaneloy/Github-SSH-windows-11/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Setting up **SSH** for Windows 11 is very similar to Windows 10 (Sometimes it gets complicated). But let's get a simplt method to do it.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Prerequisites
 
-### Markdown
+1. Download and Install [*Git Bash*](https://git-scm.com/downloads).
+2. Git Bash can also be setup from *PowerShell*. Just run the following command into PowerShell:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+```
+choco install git -Y
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+3. Once you done installing the Git Bash, open the Git Bash and Setup *Global username* and *Global email*
 
-### Jekyll Themes
+```
+git config --global user.name "your-github-username"
+git config --global user.email "your-github-email"
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/aaneloy/Github-SSH-windows-11/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```
 
-### Support or Contact
+### Step-1: Generate new SSH key
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Open the Git bash and type in:
+
+```
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+```
+
+* Hit enter when it asks for a file name
+
+
+### Step-2: Start SSH agent
+
+```
+eval $(ssh-agent -s)
+
+```
+
+then
+
+```
+ssh-add ~/.ssh/id_rsa
+
+```
+
+
+### Step-3: Copy the public key
+
+After step 2, We need to copy the ssh key to integrate with GitHub. The easiest way is to use ``clip`` option:
+
+```
+clip < ~/.ssh/id_rsa.pub
+
+```
+
+### Step-4: Add ssh key to Github
+
+We have our ``ssh`` key now. The next step is to add this to GitHub. Follow step by step:
+
+1. Open up github go click on your profile picture and go to ``settings``
+2. Under the settings, go to ``SSH and GPG Keys``
+3. Create a new ``ssh Key``
+4. Give it a name
+5. On the ``Key`` option just paste the ssh key you just copied.
+6. Finally click ``add ssh key``
+
+voilà! You have added the SSH key for Github and your Windows 11. If you want to test the SSH key, Simply clone a repository using ``ssh`` option and push some changes using Git Bash.
+
